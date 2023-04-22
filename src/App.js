@@ -1,13 +1,13 @@
-import { ReactNotifications } from "react-notifications-component";
+import logo from './logo.svg';
 import './App.css';
-import Admin from "./pages/Admin/Admin";
-import Page from "./pages/Page/Page";
+import Page from "./pages/Page";
+import { ReactNotifications } from 'react-notifications-component';
+
 function App() {
   return (
     <div>
-      <ReactNotifications/>
+      <ReactNotifications />
       <Page />
-      <Admin />
     </div>
   );
 }
