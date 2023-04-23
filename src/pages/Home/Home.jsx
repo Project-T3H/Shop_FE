@@ -10,8 +10,8 @@ import brand3 from "../../assets/images/brand-3.jpg"
 import brand4 from "../../assets/images/brand-4.jpg"
 import brand5 from "../../assets/images/brand-5.jpg"
 // import OwlCarousel from 'react-owl-carousel2';
-import 'react-owl-carousel2/lib/styles.css';
-import 'react-owl-carousel2/src/owl.theme.default.css';
+// import 'react-owl-carousel2/lib/styles.css';
+// import 'react-owl-carousel2/src/owl.theme.default.css';
 import { getListProductHome } from '../../service/Home';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
@@ -113,13 +113,13 @@ class Home extends Component {
 		return (
 			<div id="page">
 				<Header />
-				<aside id="colorlib-hero">
+				{/* <aside id="colorlib-hero">
 					<div className="flexslider">
-						{/* <OwlCarousel ref="banners" options={options} events={events}>
+						<OwlCarousel ref="banners" options={options} events={events}>
 							{this.state.items}
-						</OwlCarousel> */}
+						</OwlCarousel>
 					</div>
-				</aside>
+				</aside> */}
 				<div className="colorlib-intro">
 					<div className="container">
 						<div className="row">
