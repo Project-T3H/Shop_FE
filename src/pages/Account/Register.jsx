@@ -11,7 +11,9 @@ class Register extends Component {
       username: '',
       password: '',
       phone: '',
-      email: ''
+      email: '',
+      address: '',
+      password_cf: ''
     }
   }
 
@@ -19,18 +21,47 @@ class Register extends Component {
     this.setState({ [event.target.name]: event.target.value })
   }
 
-
   register = () => {
     var username = this.state.username;
     var password = this.state.password;
+    var password_cf = this.state.password_cf;
     var phone = this.state.phone;
     var email = this.state.email;
+    var address = this.state.address;
+    if (!username){
+      showNotification('Tên đăng nhập không được để trống', 'danger');
+      return;
+    }
+    if (!phone){
+      showNotification('Số điện thoại không được để trống', 'danger');
+      return;
+    }
+    if (!email){
+      showNotification('Email không được để trống', 'danger');
+      return;
+    }
+    if (!address){
+      showNotification('Địa chỉ không được để trống', 'danger');
+      return;
+    }
+    if (!password){
+      showNotification('Mật khẩu không được để trống', 'danger');
+      return;
+    }
+    if (!password_cf){
+      showNotification('Nhập lại mật khẩu không được để trống', 'danger');
+      return;
+    }
+    if (password !== password_cf){
+      showNotification('Mật khẩu với nhập lại mật khẩu không giống nhau', 'danger');
+      return;
+    }
     var dataRegister = {
       username: username,
       password: password,
       phone: phone,
       email: email,
-      role: '2'
+      role: '6'
     }
     register(dataRegister)
       .then(response => {
@@ -98,6 +129,7 @@ class Register extends Component {
                     />
                   </div>
 
+                  {/* Số điện thoại */}
                   <div className="form-outline mb-3">
                     <label>Số điện thoại</label>
                     <input
@@ -105,6 +137,19 @@ class Register extends Component {
                       name="phone"
                       id="phone"
                       placeholder="Nhập số điện thoại"
+                      className="form-control"
+                      onChange={this.setParam}
+                    />
+                  </div>
+
+                  {/* Địa chỉ */}
+                  <div className="form-outline mb-3">
+                    <label>Địa chỉ</label>
+                    <input
+                      type="text"
+                      name="address"
+                      id="address"
+                      placeholder="Nhập địa chỉ"
                       className="form-control"
                       onChange={this.setParam}
                     />
@@ -128,8 +173,8 @@ class Register extends Component {
                     <label htmlFor="user">Nhập lại mật khẩu</label>
                     <input
                       type="password"
-                      name="confirmPassword"
-                      id="confirmPassword"
+                      name="password_cf"
+                      id="password_cf"
                       placeholder="Nhập lại mật khẩu"
                       className="form-control"
                       onChange={this.setParam}

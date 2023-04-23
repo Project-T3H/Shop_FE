@@ -10,6 +10,7 @@ class Product_Detail extends Component {
     console.log(this.props);
     this.state = {
       product: {},
+      quantity: 1,
       id: (window.location.pathname).toString().substring(8,10),
     }
   }
@@ -33,7 +34,7 @@ class Product_Detail extends Component {
     let cart = {};
     cart.productId = this.state.id;
     cart.productName = this.state.product.product_name;
-    cart.productQuantity = 1;
+    cart.productQuantity = this.state.quantity;
     cart.productPrice = this.state.product.price;
     cart.productImage = this.state.product.image;
     lstCart.push(cart);
@@ -45,6 +46,22 @@ class Product_Detail extends Component {
   pay(){
     window.location.replace('/checkout');
   }
+
+  setParam = (event) => {
+    this.setState({ [event.target.name]: event.target.value })
+  }
+
+  plusQuantity = () => {
+    const quantity = this.state.quantity + 1;
+    console.log(quantity)
+    this.setState({quantity: quantity})
+  }
+
+  minusQuantity = () => {
+    const quantity = this.state.quantity !== 1 ? this.state.quantity - 1: this.state.quantity;
+    this.setState({quantity: quantity})
+  }
+
   render() {
     console.log(this.props)
     return (
@@ -68,8 +85,7 @@ class Product_Detail extends Component {
                   <div className="item">
                     <div className="product-entry border">
                       <a href="#" className="prod-img">
-                        {/* <img src={'C://Users//nguye//Documents//Anh//Du an//Trung//BE//be//BE_Shop//media' + this.state.product.image} className="img-fluid" alt="Free html5 bootstrap 4 template" /> */}
-                        <img src='file:///C:/Users/nguye/Documents/Anh/Du%20an/Trung/BE/be/BE_Shop/media/Image/product_None/Adidas_Superstar_Trang.jpg' className="img-fluid" alt="Free html5 bootstrap 4 template" />
+                        <img src={'../../../assets' + this.state.product.image} className="img-fluid" alt="Free html5 bootstrap 4 template" />
                       </a>
                     </div>
                   </div>
@@ -88,7 +104,7 @@ class Product_Detail extends Component {
                       <i className="icon-star-full"></i>
                     </span>
                   </p>
-                  <p>{this.state.product.description}</p>
+                  <p>{this.state.product.content}</p>
                   <div className="size-wrap">
                     <div className="block-26 mb-2">
                       <h4>Size</h4>
@@ -103,13 +119,13 @@ class Product_Detail extends Component {
                   </div>
                   <div className="input-group mb-4">
                     <span className="input-group-btn">
-                      <button type="button" className="quantity-left-minus btn" data-type="minus" data-field="">
+                      <button type="button" className="quantity-left-minus btn" data-type="minus" data-field="" onClick={() => this.minusQuantity()}>
                         <i className="icon-minus2"></i>
                       </button>
                     </span>
-                    <input type="text" id="quantity" name="quantity" className="form-control input-number" value="1" min="1" max="100" />
+                    <input type="text" id="quantity" name="quantity" className="form-control input-number" min="1" max="100" value={this.state.quantity} onChange={this.setParam}/>
                     <span className="input-group-btn ml-1">
-                      <button type="button" className="quantity-right-plus btn" data-type="plus" data-field="">
+                      <button type="button" className="quantity-right-plus btn" data-type="plus" data-field="" onClick={() => this.plusQuantity()}>
                         <i className="icon-plus2"></i>
                       </button>
                     </span>
@@ -136,7 +152,7 @@ class Product_Detail extends Component {
 
                       <div className="tab-content" id="pills-tabContent">
                         <div className="tab-pane border fade show active" id="pills-description" role="tabpanel" aria-labelledby="pills-description-tab">
-                          {this.state.product.content}
+                          {this.state.product.description}
                         </div>
 
                       </div>

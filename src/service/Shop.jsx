@@ -12,7 +12,6 @@ const request = (options) => {
     // }
 
     const defaults = {headers: headers};
-    console.log(options);
     options = Object.assign({}, defaults, options);
 
     return fetch(options.url, options)
@@ -32,7 +31,7 @@ const request = (options) => {
 export function getListBranch(){
 
     return request({
-        url: API_URL_SHOP + 'branch',
+        url: API_URL_SHOP + 'list-branch',
         method: 'GET'
     });
 
@@ -61,6 +60,18 @@ export function getListColor(){
 
 }
 
+/* =========================
+    Lấy danh danh mục
+*/
+export function getListCategory(){
+
+    return request({
+        url: API_URL_SHOP + 'list-category',
+        method: 'GET'
+    });
+
+}
+
 
 /* =========================
     Lấy danh sản phẩm
@@ -75,3 +86,19 @@ export function getListProduct(){
 }
 
 // =====================
+export function filterProduct(branchId, categoryId){
+
+    var url;
+    if(branchId && !categoryId){
+        url = API_URL_SHOP + 'filter?branch_id=' + branchId + '&category_id=';
+    }else if (!branchId && categoryId){
+        url = API_URL_SHOP + 'filter?category_id=' + categoryId + '&branch_id=';
+    }else{
+        url = API_URL_SHOP + 'filter?branch_id=' + branchId + '&category_id=' + categoryId;
+    }
+    return request({
+        url: url,
+        method: 'GET'
+    });
+
+}

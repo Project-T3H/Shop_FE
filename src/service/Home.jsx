@@ -12,7 +12,6 @@ const request = (options) => {
     // }
 
     const defaults = {headers: headers};
-    console.log(options);
     options = Object.assign({}, defaults, options);
 
     return fetch(options.url, options)

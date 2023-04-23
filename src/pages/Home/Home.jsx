@@ -164,7 +164,7 @@ class Home extends Component {
                           <div className="col-lg-3 mb-4 text-center">
 						  <div className="product-entry border">
 							  <a href="#" className="prod-img">
-								  <img src={p.image} className="img-fluid" alt="Free html5 bootstrap 4 template" />
+								  <img src={'../../../assets' + p.image} className="img-fluid" alt="Free html5 bootstrap 4 template" />
 							  </a>
 							  <div className="desc" onClick={() => this.detailProduct(p)}>
 								  <h2><a>{p.product_name}</a></h2>

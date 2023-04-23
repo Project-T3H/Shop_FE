@@ -21,6 +21,10 @@ class Cart extends Component {
     window.location.replace('/checkout');
   }
 
+  routerHome() {
+    window.location.replace('/');
+  }
+
   deleteItemCart(i){
     this.state.lstCart.splice(i, 1);
     console.log(this.state.lstCart);
@@ -82,9 +86,9 @@ class Cart extends Component {
                 {this.state.lstCart.map((c, index) => (
                   <div className="product-cart d-flex">
                     <div className="one-forth">
-                      <div className="product-img" style={{ backgroundImage: `url(${c.productImage})` }}>
+                      <div className="product-img" style={{ backgroundImage: `url(${'../../../assets' + c.productImage})` }}>
                       </div>
-                      {/* <img src={c.productImage} className="product-img"></img> */}
+                      {/* <img src={'../../../assets' + c.productImage} className="product-img"></img> */}
                       <div className="display-tc">
                         <h3>{c.productName}</h3>
                       </div>
@@ -113,61 +117,15 @@ class Cart extends Component {
                 ))}
               </div>
             </div>
-            <div className="row d-flex flex-row-reverse">
-              <button type="button" className="btn btn-primary d-flex flex-row-reverse" onClick={() => this.routerCheckout()}>Thanh toán</button>
+            <div className='row'>
+              <div className="col-md-6 d-flex flex-row-reverse">
+                <button type="button" className="btn btn-primary d-flex flex-row-reverse" onClick={() => this.routerHome()}> Trang chủ</button>
+              </div>
+              <div className="col-md-6">
+                <button type="button" className="btn btn-primary" onClick={() => this.routerCheckout()}>Thanh toán</button>
+              </div>
             </div>
 
-            {/*<div className="row">
-              <div className="col-sm-8 offset-sm-2 text-center colorlib-heading colorlib-heading-sm">
-                <h2>Related Products</h2>
-              </div>
-            </div>
-             <div className="row">
-              <div className="col-md-3 col-lg-3 mb-4 text-center">
-                <div className="product-entry border">
-                  <a href="#" className="prod-img">
-                    <img src="../assets/images/item-1.jpg" className="img-fluid" alt="Free html5 bootstrap 4 template" />
-                  </a>
-                  <div className="desc">
-                    <h2><a href="#">Women's Boots Shoes Maca</a></h2>
-                    <span className="price">$139.00</span>
-                  </div>
-                </div>
-              </div>
-              <div className="col-md-3 col-lg-3 mb-4 text-center">
-                <div className="product-entry border">
-                  <a href="#" className="prod-img">
-                    <img src="../assets/images/item-2.jpg" className="img-fluid" alt="Free html5 bootstrap 4 template" />
-                  </a>
-                  <div className="desc">
-                    <h2><a href="#">Women's Minam Meaghan</a></h2>
-                    <span className="price">$139.00</span>
-                  </div>
-                </div>
-              </div>
-              <div className="col-md-3 col-lg-3 mb-4 text-center">
-                <div className="product-entry border">
-                  <a href="#" className="prod-img">
-                    <img src="../assets/images/item-3.jpg" className="img-fluid" alt="Free html5 bootstrap 4 template" />
-                  </a>
-                  <div className="desc">
-                    <h2><a href="#">Men's Taja Commissioner</a></h2>
-                    <span className="price">$139.00</span>
-                  </div>
-                </div>
-              </div>
-              <div className="col-md-3 col-lg-3 mb-4 text-center">
-                <div className="product-entry border">
-                  <a href="#" className="prod-img">
-                    <img src="../assets/images/item-4.jpg" className="img-fluid" alt="Free html5 bootstrap 4 template" />
-                  </a>
-                  <div className="desc">
-                    <h2><a href="#">Russ Men's Sneakers</a></h2>
-                    <span className="price">$139.00</span>
-                  </div>
-                </div>
-              </div>
-            </div> */}
           </div>
         </div>
         <Footer />

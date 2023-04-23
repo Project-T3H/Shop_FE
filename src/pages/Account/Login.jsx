@@ -30,13 +30,6 @@ class Login extends Component {
         showNotification('Đăng nhập thành công', 'success');
         console.log(response.user);
         window.location.replace("/")
-        // if (response.user !== null) {
-        //   if (response.user[0].role_name === "ADMIN") {
-        //     window.location.replace("/admin/home")
-        //   } else {
-        //     window.location.replace("/")
-        //   }
-        // }
       }).catch(error => {
         console.log(error)
         showNotification('Đăng nhập thất bại!', 'danger');

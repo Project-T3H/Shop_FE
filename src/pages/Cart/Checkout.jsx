@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
-import { checkout } from '../../service/Checkout';
+import { checkout, saveOrderDetail } from '../../service/Checkout';
+import { showNotification } from '../../service/NotificationService';
 
 class Checkout extends Component {
   constructor(props) {
@@ -22,14 +23,25 @@ class Checkout extends Component {
     if (lstCart !== null) {
       this.setState({ lstCart: lstCart });
       lstCart.forEach(e => {
-        console.log(e.productPrice);
         total = Number(total) + (Number(e.productPrice) * Number(e.productQuantity));
-        this.setState({totalPrice: total})
+        this.setState({ totalPrice: total })
       })
     }
   }
 
   checkout() {
+    let user = localStorage.getItem("currentUser");
+    if(!user){
+      window.location.replace('/login')
+    }
+    if(!this.state.lstCart){
+      showNotification('Bạn chưa chọn sản phẩm', 'danger');
+      return;
+    }
+    if(!this.state.customerName || !this.state.phone || !this.state.email || !this.state.address){
+      showNotification('Nhập đầy đủ thông tin vào chi tiết hóa đơn', 'danger');
+      return;
+    }
     let orders = {};
     orders.order_code = this.state.customerName;
     orders.phone = this.state.phone;
@@ -37,10 +49,26 @@ class Checkout extends Component {
     orders.email = this.state.email;
     orders.total_price = this.state.totalPrice;
     orders.lstOrderItem = this.state.lstCart;
-    checkout(orders).then(response => {
+    checkout(orders)
+    .then(response => {
+      if(response !== null){
+        orders.lstOrderItem.forEach(o => {
+          let orderItem = {};
+          orderItem.orderId = response.id;
+          orderItem.productId = o.productId;
+          orderItem.quantity = o.productQuantity;
+          orderItem.price = o.productPrice;
+          saveOrderDetail(orderItem).then(res => {
+            console.log(res)
+          })
+        })
+      }
       sessionStorage.removeItem('cart');
       window.location.replace('/order-complete');
-    })
+    }).catch(error => {
+      console.log(error)
+      showNotification('Đặt hàng thất bại', 'danger');
+    });
   }
 
   setParam = (event) => {
@@ -82,7 +110,7 @@ class Checkout extends Component {
               </div>
             </div>
             <div className="row">
-              <div className="col-lg-8">
+              <div className="col-lg-6">
                 <form method="post" className="colorlib-form">
                   <h2>Chi tiết hóa đơn</h2>
                   <div className="row">
@@ -116,7 +144,7 @@ class Checkout extends Component {
                 </form>
               </div>
 
-              <div className="col-lg-4">
+              <div className="col-lg-6">
                 <div className="row">
                   <div className="col-md-12">
                     <div className="cart-detail">
@@ -127,7 +155,6 @@ class Checkout extends Component {
                             {this.state.lstCart.map((c) =>
                               <li><span>{c.productName} x {c.productQuantity}</span> <span>{(Number(c.productPrice) * Number(c.productQuantity)).toLocaleString('en-US')} VNĐ</span></li>
                             )}
-                            {/* <li><span>1 x Product Name</span> <span>$90.00</span></li> */}
                           </ul>
                         </li>
                         <li><span>Tổng tiền</span> <span>{Number(this.state.totalPrice).toLocaleString('en-US')} VNĐ</span></li>
@@ -139,7 +166,7 @@ class Checkout extends Component {
                 </div>
                 <div className="row">
                   <div className="col-md-12 text-center">
-                    <p><a onClick={() => this.checkout()} className="btn btn-primary" style={{color: 'white'}}>Đặt hàng</a></p>
+                    <p><a onClick={() => this.checkout()} className="btn btn-primary" style={{ color: 'white' }}>Đặt hàng</a></p>
                   </div>
                 </div>
               </div>

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
-import { getListBranch, getListColor, getListProduct, getListSize } from '../../service/Shop';
+import { filterProduct, getListBranch, getListCategory, getListColor, getListProduct, getListSize } from '../../service/Shop';
 
 class Shop extends Component {
   constructor(props) {
@@ -10,7 +10,10 @@ class Shop extends Component {
       listBranch: [],
       listColor: [],
       listSize: [],
-      listProduct: []
+      listProduct: [],
+      listCategory: [],
+      branchId: '',
+      categoryId: ''
     }
   }
 
@@ -30,6 +33,14 @@ class Shop extends Component {
       .then(response => {
         this.setState({
           listColor: response
+        })
+      }).catch(error => {
+        console.log(error)
+      });
+    getListCategory()
+      .then(response => {
+        this.setState({
+          listCategory: response
         })
       }).catch(error => {
         console.log(error)
@@ -57,6 +68,28 @@ class Shop extends Component {
   detailProduct(product) {
     window.location.replace('/detail/' + product.id);
   }
+
+  onSearch = () => {
+    filterProduct(this.state.branchId, this.state.categoryId)
+      .then(response => {
+        this.setState({
+          listProduct: response.item
+        })
+      }).catch(error => {
+        console.log(error)
+      });
+  }
+
+  setBranchId = (id) => {
+    this.setState({ branchId: id });
+    setTimeout(() => this.onSearch(), 1000);
+  }
+
+  setCategoryId = (id) => {
+    this.setState({ categoryId: id });
+    setTimeout(() => this.onSearch(), 1000);
+  }
+
   render() {
     return (
       <div id="page">
@@ -71,7 +104,7 @@ class Shop extends Component {
           </div>
         </div>
 
-        <div className="colorlib-featured">
+        {/* <div className="colorlib-featured">
           <div className="container">
             <div className="row">
               <div className="col-sm-4 text-center">
@@ -100,7 +133,7 @@ class Shop extends Component {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
 
         <div className="colorlib-product">
           <div className="container">
@@ -109,15 +142,25 @@ class Shop extends Component {
                 <div className="row">
                   <div className="col-sm-12">
                     <div className="side border mb-1">
-                      <h3>Nhãn hàng</h3>
+                      <h3>Loại sản phẩm</h3>
                       <ul>
-                        {this.state.listBranch.map((b) => (
-                          <li style={{ cursor: "pointer" }}>{b.branch_name}</li>
+                        {this.state.listCategory.map((c) => (
+                          <li style={{ cursor: "pointer" }} onClick={() => this.setCategoryId(c.id)}>{c.category_name}</li>
                         ))}
                       </ul>
                     </div>
                   </div>
                   <div className="col-sm-12">
+                    <div className="side border mb-1">
+                      <h3>Nhãn hàng</h3>
+                      <ul>
+                        {this.state.listBranch.map((b) => (
+                          <li style={{ cursor: "pointer" }} onClick={() => this.setBranchId(b.id)}>{b.branch_name}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                  {/* <div className="col-sm-12">
                     <div className="side border mb-1">
                       <h3>Size</h3>
                       <div className="block-26 mb-2">
@@ -129,26 +172,16 @@ class Shop extends Component {
                         </ul>
                       </div>
                     </div>
-                  </div>
-                  <div className="col-sm-12">
-                    <div className="side border mb-1">
-                      <h3>Màu</h3>
-                      <ul>
-                        {this.state.listColor.map((c) => (
-                          <li style={{ cursor: "pointer" }}>{c.color_name}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
+                  </div> */}
                 </div>
               </div>
               <div className="col-lg-9 col-xl-9">
                 <div className="row row-pb-md">
                   {this.state.listProduct.map((p) => (
-                    <div className="col-lg-4 mb-4 text-center">
+                    <div className="col-lg-4 mb-4 text-center" onClick={() => this.detailProduct(p)}>
                       <div className="product-entry border">
-                        <a href="#" className="prod-img">
-                          <img src={p.image} className="img-fluid" alt="Free html5 bootstrap 4 template" />
+                        <a className="prod-img">
+                          <img src={'../../../assets' + p.image} className="img-fluid" alt="Free html5 bootstrap 4 template" />
                         </a>
                         <div className="desc">
                           <h2><a href="#">{p.product_name}</a></h2>
@@ -157,7 +190,7 @@ class Shop extends Component {
                       </div>
                     </div>
                   ))}
-                  
+
                 </div>
                 {/* <div className="row">
                   <div className="col-md-12 text-center">

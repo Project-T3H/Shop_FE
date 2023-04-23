@@ -12,7 +12,6 @@ const request = (options) => {
     // }
 
     const defaults = {headers: headers};
-    console.log(options);
     options = Object.assign({}, defaults, options);
 
     return fetch(options.url, options)
@@ -27,6 +26,7 @@ const request = (options) => {
 };
 
 export function checkout(orders){
+    let user = localStorage.getItem("currentUser");
     var raw = JSON.stringify({
         "order_code": orders.order_code,
         "phone": orders.phone,
@@ -34,7 +34,7 @@ export function checkout(orders){
         "address": orders.address,
         "total_price": orders.total_price,
         "status": 0,
-        "customer_name": 1,
+        "customer_name": user[0].id,
         "lstOrderItem": orders.lstOrderItem
       });
 
@@ -45,4 +45,20 @@ export function checkout(orders){
         redirect: 'follow'
     });
 
+}
+
+export function saveOrderDetail (orderItem) {
+    var raw = JSON.stringify({
+        "order": orderItem.orderId,
+        "product": orderItem.productId,
+        "quantity": orderItem.quantity,
+        "price": orderItem.price
+      });
+
+    return request({
+        url: API_URL_CHECKOUT + 'create-orderdetail',
+        method: 'POST',
+        body: raw,
+        redirect: 'follow'
+    });
 }
