@@ -31,6 +31,8 @@ export function register(dataRegister){
         "email": dataRegister.email,
         "phone": dataRegister.phone,
         "last_name": dataRegister.last_name,
+        "address": dataRegister.address,
+        "gender": 0,
         "role_id": dataRegister.role,
       });
 

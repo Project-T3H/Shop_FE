@@ -26,7 +26,7 @@ const request = (options) => {
 };
 
 export function checkout(orders){
-    let user = localStorage.getItem("currentUser");
+    let user = JSON.parse(localStorage.getItem("currentUser"));
     var raw = JSON.stringify({
         "order_code": orders.order_code,
         "phone": orders.phone,

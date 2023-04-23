@@ -61,15 +61,14 @@ class Register extends Component {
       password: password,
       phone: phone,
       email: email,
+      address: address,
       role: '6'
     }
     register(dataRegister)
       .then(response => {
         console.log(response)
-        if(response.Message === 'Success'){
-          showNotification('Tạo tài khoản thành công', 'success');
-          window.location.replace("/login")
-        }
+        showNotification('Tạo tài khoản thành công', 'success');
+        window.location.replace("/login")
       }).catch(error => {
         console.log(error)
         showNotification('Tạo tài khoản thất bại', 'danger');
